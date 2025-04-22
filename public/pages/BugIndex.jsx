@@ -1,10 +1,10 @@
 const { useState, useEffect } = React
 
-import { bugService } from '../services/bug.service.local.js'
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { bugService } from '../services/bug.service.local.js';
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js';
 
-import { BugFilter } from '../cmps/BugFilter.jsx'
-import { BugList } from '../cmps/BugList.jsx'
+import { BugFilter } from '../cmps/BugFilter.jsx';
+import { BugList } from '../cmps/BugList.jsx';
 
 export function BugIndex() {
     const [bugs, setBugs] = useState(null)
@@ -33,7 +33,6 @@ export function BugIndex() {
             title: prompt('Bug title?', 'Bug ' + Date.now()),
             description: prompt('Bug description?'),
             severity: +prompt('Bug severity?', 3),
-            description
         }
 
         bugService.save(bug)

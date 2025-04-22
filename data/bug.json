@@ -1,0 +1,31 @@
+[
+    {
+        "title": "Infinite Loop Detected",
+        "description": "momo",
+        "severity": 4,
+        "_id": "1NF1N1T3"
+    },
+    {
+        "title": "Keyboard Not Found",
+        "description": "momo",
+        "severity": 3,
+        "_id": "K3YB0RD"
+    },
+    {
+        "title": "404 Coffee Not Found",
+        "description": "momo",
+        "severity": 2,
+        "_id": "C0FF33"
+    },
+    {
+        "title": "Unexpected Response",
+        "description": "momo",
+        "severity": 1,
+        "_id": "G0053"
+    },
+    {
+        "description": "h",
+        "severity": null,
+        "_id": "LDeor"
+    }
+]
