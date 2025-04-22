@@ -58,3 +58,4 @@ function _saveBugsToFile() {
         })
     })
 }
+

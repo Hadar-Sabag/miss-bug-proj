@@ -36,7 +36,7 @@ app.get('/api/bug/save', (req, res) => {
         severity: +req.query.severity,
         _id: req.query._id,
     }
-    
+
     bugService.save(bugToSave)
         .then(savedBug => res.send(savedBug))
         .catch(err => {
@@ -48,13 +48,37 @@ app.get('/api/bug/save', (req, res) => {
 //* Get/Read by id
 app.get('/api/bug/:bugId', (req, res) => {
     const { bugId } = req.params
+
+    // שליפת הבאגים שצפו בהם עד עכשיו
+    let visitedBugs = req.cookies.visitedBugs || '[]'
+    visitedBugs = JSON.parse(visitedBugs)
+
+    // אם הבאג הנוכחי לא קיים כבר ברשימה – נוסיף אותו
+    if (!visitedBugs.includes(bugId)) {
+        visitedBugs.push(bugId)
+    }
+
+    console.log('User visited the following bugs:', visitedBugs)
+
+    // הגבלת צפייה ל־3 באגים שונים
+    if (visitedBugs.length > 3) {
+        return res.status(401).send('Wait for a bit')
+    }
+
+    // שמירת העדכון בקוקי ל־7 שניות
+    res.cookie('visitedBugs', JSON.stringify(visitedBugs), {
+        maxAge: 20 * 1000,
+        httpOnly: true,
+    })
+
+    // שליפת הבאג והחזרה
     bugService.getById(bugId)
         .then(bug => res.send(bug))
         .catch(err => {
-            // loggerService.error('Cannot get bug', err)
             res.status(400).send('Cannot get bug')
         })
 })
+
 
 //* Remove/Delete
 app.get('/api/bug/:bugId/remove', (req, res) => {
@@ -67,10 +91,20 @@ app.get('/api/bug/:bugId/remove', (req, res) => {
         })
 })
 
+// cookies
+app.get('/api/bug/:bugId', (req, res) => {
+    let visitedCount = req.cookies.visitedCount || 0
+    visitedCount++
+    console.log('visitedCount:', visitedCount)
+    res.cookie('visitedCount', visitedCount, { maxAge: 5 * 1000 })
+    console.log('visitedCount:', visitedCount)
+    res.send('public')
+})
+
 
 const port = 3031
 
 // app.listen(port, () =>
 //     loggerService.info(`Server listening on port http://127.0.0.1:${port}/`)
 // )
- app.listen(port)
+app.listen(port)
