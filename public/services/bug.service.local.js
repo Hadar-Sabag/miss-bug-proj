@@ -16,26 +16,30 @@ export const bugService = {
 
 function query(filterBy = {}) {
     return axios.get(BASE_URL, { params: filterBy })
-    .then(res => res.data)
+        .then(res => res.data)
 }
 
 function getById(bugId) {
     return axios.get(BASE_URL + bugId)
-    .then(res => res.data)
+        .then(res => res.data)
 }
 
 function remove(bugId) {
-    return axios.get(BASE_URL + bugId + '/remove')
-    .then(res => res.data)
+    return axios.delete(BASE_URL + bugId)
+        .then(res => res.data)
 }
 
 function save(bug) {
-    return axios.get(BASE_URL + 'save', { params: bug }).then(res => res.data)
+    if (bug._id) {
+        return axios.put(BASE_URL + bug._id, bug).then(res => res.data)
+    } else {
+        return axios.post(BASE_URL, bug).then(res => res.data)
+    }
 }
 
 function _createBugs() {
     let bugs = utilService.loadFromStorage(STORAGE_KEY)
-    if (bugs && bugs.length > 0) return 
+    if (bugs && bugs.length > 0) return
 
     bugs = [
         {
@@ -67,5 +71,5 @@ function _createBugs() {
 }
 
 function getDefaultFilter() {
-    return { txt: '', minSeverity: 0 }
+    return { txt: '', minSeverity: 0, labels: [] }
 }

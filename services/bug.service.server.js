@@ -12,15 +12,48 @@ export const bugService = {
 
 function query(filterBy = {}) {
     let bugToDisplay = bugs
-    if (filterBy.title) {
-        const regExp = new RegExp(filterBy.title, 'i')
+
+    const total = bugToDisplay.length
+
+    //filter by txt
+    if (filterBy.txt) {
+        const regExp = new RegExp(filterBy.txt, 'i')
         bugToDisplay = bugToDisplay.filter(bug => regExp.test(bug.title))
     }
-    if (filterBy.severity) {
-        bugToDisplay = bugToDisplay.filter(bug => bug.severity >= filterBy.severity)
+    //filer by severity
+    if (filterBy.minSeverity) {
+        bugToDisplay = bugToDisplay.filter(bug => bug.severity >= filterBy.minSeverity)
+    }
+    //filter by labels
+    if (filterBy.labels && filterBy.labels.length) {
+        bugToDisplay = bugToDisplay.filter(bug =>
+            bug.labels &&
+            bug.labels.some(function (label) {
+                return filterBy.labels.includes(label)
+            })
+        )
+    }
+    console.log("bugToDisplay: ", bugToDisplay.length)
+
+    //sort
+    if (filterBy.sortBy) {
+        bugToDisplay.sort((a, b) => {
+            const field = filterBy.sortBy
+            const dir = filterBy.sortDir
+            if (typeof a[field] === 'string') {
+                return a[field].localeCompare(b[field]) * dir
+            } else {
+                return (a[field] - b[field]) * dir
+            }
+        })
     }
 
-    return Promise.resolve(bugToDisplay)
+    // Paging
+    const PAGE_SIZE = 3
+    const startIdx = filterBy.pageIdx * PAGE_SIZE
+    bugToDisplay = bugToDisplay.slice(startIdx, startIdx + PAGE_SIZE)
+
+    return Promise.resolve({ bugs: bugToDisplay, total })
 }
 
 function getById(bugId) {
@@ -42,6 +75,8 @@ function save(bugToSave) {
         bugs[bugIdx] = bugToSave
     } else {
         bugToSave._id = utilService.makeId()
+        bugToSave.createdAt = Date.now()
+        bugToSave.labels = bugToSave.labels || ['critical', 'need-CR', 'dev-branch']
         bugs.push(bugToSave)
     }
 

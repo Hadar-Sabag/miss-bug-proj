@@ -1,5 +1,7 @@
 const { useState, useEffect } = React
 
+const LABELS = ['critical', 'need-CR', 'dev-branch', 'UI', 'backend']
+
 export function BugFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
@@ -19,6 +21,15 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                 break
 
             case 'checkbox':
+                if (field === 'labels') {
+                    const label = target.value
+                    const labels = filterByToEdit.labels || []
+                    value = target.checked
+                        ? [...labels, label]
+                        : labels.filter(currLabel => currLabel !== label)
+                    setFilterByToEdit(prev => ({ ...prev, labels: value }))
+                    return
+                }
                 value = target.checked
                 break
 
@@ -34,7 +45,8 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
         onSetFilterBy(filterByToEdit)
     }
 
-    const { txt, minSeverity } = filterByToEdit
+    const { txt, minSeverity, labels = [] } = filterByToEdit
+
     return (
         <section className="bug-filter">
             <h2>Filter</h2>
@@ -44,6 +56,22 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
 
                 <label htmlFor="minSeverity">Min Severity: </label>
                 <input value={minSeverity} onChange={handleChange} type="number" placeholder="By Min Severity" id="minSeverity" name="minSeverity" />
+
+                <fieldset>
+                    <legend>Labels:</legend>
+                    {LABELS.map(label => (
+                        <label key={label}>
+                            <input
+                                type="checkbox"
+                                name="labels"
+                                value={label}
+                                checked={labels.includes(label)}
+                                onChange={handleChange}
+                            />
+                            {label}
+                        </label>
+                    ))}
+                </fieldset>
             </form>
         </section>
     )

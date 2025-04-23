@@ -1,32 +1,49 @@
 [
     {
-        "title": "Infinite Loop Detected",
-        "description": "momo",
-        "severity": 4,
-        "_id": "1NF1N1T3"
-    },
-    {
         "title": "Keyboard Not Found",
         "description": "momo",
         "severity": 3,
-        "_id": "K3YB0RD"
-    },
-    {
-        "title": "404 Coffee Not Found",
-        "description": "momo",
-        "severity": 2,
-        "_id": "C0FF33"
+        "_id": "K3YB0RD",
+        "createdAt": 1672598848391,
+        "labels": [
+            "critical",
+            "need-CR",
+            "dev-branch"
+        ]
     },
     {
         "title": "Unexpected Response",
         "description": "momo",
         "severity": 1,
-        "_id": "G0053"
+        "_id": "G0053",
+        "createdAt": 1672771648391,
+        "labels": [
+            "backend",
+            "security"
+        ]
     },
     {
         "title": "hadar sabag",
         "description": "beautful",
         "severity": 5,
-        "_id": "KHp3M"
+        "_id": "KHp3M",
+        "createdAt": 1672858048391,
+        "labels": [
+            "performance",
+            "critical",
+            "dev-branch"
+        ]
+    },
+    {
+        "title": "test",
+        "description": "gg",
+        "severity": 3,
+        "_id": "VUe9w",
+        "createdAt": 1745418475925,
+        "labels": [
+            "critical",
+            "need-CR",
+            "dev-branch"
+        ]
     }
 ]

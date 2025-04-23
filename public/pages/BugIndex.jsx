@@ -4,17 +4,22 @@ import { bugService } from '../services/bug.service.local.js';
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js';
 
 import { BugFilter } from '../cmps/BugFilter.jsx';
+import { BugSort } from '../cmps/BugSort.jsx';
 import { BugList } from '../cmps/BugList.jsx';
 
 export function BugIndex() {
     const [bugs, setBugs] = useState(null)
-    const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
+    const [totalBugs, setTotalBugs] = useState(0)
+    const [filterBy, setFilterBy] = useState({ ...bugService.getDefaultFilter(), pageIdx: 0 })
 
     useEffect(loadBugs, [filterBy])
 
     function loadBugs() {
         bugService.query(filterBy)
-            .then(setBugs)
+            .then(({ bugs, total }) => {
+                setBugs(bugs)
+                setTotalBugs(total)
+            })
             .catch(err => showErrorMsg(`Couldn't load bugs - ${err}`))
     }
 
@@ -65,6 +70,8 @@ export function BugIndex() {
     return <section className="bug-index main-content">
 
         <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+        <BugSort filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+
         <header>
             <h3>Bug List</h3>
             <button onClick={onAddBug}>Add Bug</button>
@@ -74,5 +81,26 @@ export function BugIndex() {
             bugs={bugs}
             onRemoveBug={onRemoveBug}
             onEditBug={onEditBug} />
+
+        <section className="bug-paging">
+            <button disabled={filterBy.pageIdx === 0}
+                onClick={() => onSetFilterBy({ pageIdx: filterBy.pageIdx - 1 })}>
+                Prev
+            </button>
+
+            <span>Page {filterBy.pageIdx + 1}</span>
+
+            <button
+                onClick={() => {
+                    const PAGE_SIZE = 3
+                    const totalPages = Math.ceil(totalBugs / PAGE_SIZE)
+                    const nextPage = (filterBy.pageIdx + 1) % totalPages
+                    onSetFilterBy({ pageIdx: nextPage })
+                }}>
+                Next
+            </button>
+
+        </section>
+
     </section>
 }
