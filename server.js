@@ -99,12 +99,14 @@ app.post('/api/bug', (req, res) => {
 app.put('/api/bug/:bugId', (req, res) => {
     const loggedinUser = authService.validateToken(req.cookies.loginToken)
     if (!loggedinUser) return res.status(401).send(`Can't update bug`)
-
+    console.log("req.body: ", req.body)
     const bugToSave = {
         title: req.body.title,
         description: req.body.description,
         severity: +req.body.severity,
         _id: req.body._id,
+        creator: {...req.body.creator}
+
     }
 
     bugService.save(bugToSave, loggedinUser)
@@ -124,7 +126,7 @@ app.delete('/api/bug/:bugId', (req, res) => {
     bugService.remove(bugId, loggedinUser)
         .then(() => res.send(`Bug removed - ${bugId}`))
         .catch(err => {
-          console.log("err: ", err)
+            console.log("err: ", err)
             res.status(400).send('Cannot remove bug')
         })
 })
@@ -145,7 +147,7 @@ app.get('/api/user/:userId', (req, res) => {
     userService.getById(userId)
         .then(user => res.send(user))
         .catch(err => {
-           console.log("err: ", err)
+            console.log("err: ", err)
             res.status(400).send('Cannot load user')
         })
 })

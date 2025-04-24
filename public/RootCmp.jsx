@@ -28,7 +28,7 @@ export function App() {
                     <Route path="/bug/:bugId" element={<BugDetails />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/auth" element={<LoginSignup setLoggedinUser={setLoggedinUser} />} />
-                    {/* <Route path="/user/:userId" element={<UserDetails />} /> */}
+                    <Route path="/user/:userId" element={<UserDetails />} />
                 </Routes>
             </main>
             <AppFooter />

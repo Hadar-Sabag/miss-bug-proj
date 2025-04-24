@@ -20,16 +20,6 @@
         }
     },
     {
-        "title": "404 Coffee Not Found",
-        "description": "momo",
-        "severity": 2,
-        "_id": "C0FF33",
-        "creator": {
-            "_id": "u102",
-            "fullname": "Nina Simantov"
-        }
-    },
-    {
         "title": "Unexpected Response",
         "description": "momo",
         "severity": 1,
@@ -37,6 +27,36 @@
         "creator": {
             "_id": "6iykr",
             "fullname": "Kiki Ki"
+        }
+    },
+    {
+        "title": "Bug 1745504673194",
+        "description": "bghn",
+        "severity": 3,
+        "_id": "NKhWu",
+        "createdAt": 1745504689254,
+        "labels": [
+            "critical",
+            "need-CR",
+            "dev-branch"
+        ],
+        "creator": {
+            "_id": "u10000",
+            "username": "admin",
+            "fullname": "Admin Adminov",
+            "score": 100,
+            "isAdmin": true
+        }
+    },
+    {
+        "title": "Bug 17455",
+        "description": "hhh",
+        "severity": 1,
+        "_id": "tTBwv",
+        "creator": {
+            "username": "hadar",
+            "fullname": "hadar sabag",
+            "_id": "5oPqf"
         }
     }
 ]

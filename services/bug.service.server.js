@@ -74,11 +74,14 @@ function remove(bugId, loggedinUser) {
 }
 
 function save(bugToSave, loggedinUser) {
+    console.log("bugToSave: ", bugToSave)
+    console.log("loggedinUser: ", loggedinUser)
     if (bugToSave._id) {
         if (!loggedinUser.isAdmin &&
             loggedinUser._id !== bugToSave.creator._id) {
             return Promise.reject(`Not your bug`)
         }
+        console.log("from bug service")
         const bugIdx = bugs.findIndex(bug => bug._id === bugToSave._id)
         bugs[bugIdx] = bugToSave
     } else {
